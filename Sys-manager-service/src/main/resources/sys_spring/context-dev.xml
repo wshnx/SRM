@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<context:property-placeholder	location="classpath:properties/db.properties" />
+	<bean id="oaDataSource"	class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" init-method="init">
+		<property name="url" value="${oa.url}"></property>
+		<property name="driverClassName" value="${oa.driver}"></property>
+		<property name="username" value="${oa.username}"></property>
+		<property name="password" value="${oa.password}"></property>
+		<property name="maxActive" value="10"></property>
+		<property name="minIdle" value="5"></property>
+	</bean>
+	<bean id="srmDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" init-method="init">
+		<property name="url" value="${test.url}"></property>
+		<property name="driverClassName" value="${test.driver}"></property>
+		<property name="username" value="${test.username}"></property>
+		<property name="password" value="${test.password}"></property>
+		<property name="maxActive" value="10"></property>
+		<property name="minIdle" value="5"></property>
+	</bean>
+	 <bean id="dataSource" class="com.goldCup.common.utils.MulitRountingDataSource">
+          <property name="targetDataSources">
+              <map key-type="com.goldCup.common.utils.DataSources">
+                  <entry key="SRM" value-ref="srmDataSource" />
+                  <entry key="OA" value-ref="oaDataSource"/>
+              </map>
+          </property>
+          <property name="defaultTargetDataSource" ref="srmDataSource"></property>
+        
+     </bean> 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:sys_mapper/*.xml"></property>
+		<property name="configLocation" value="classpath:sys_mybatis/sys_config.xml"></property>
+	</bean>
+	<!-- 扫描所有mapper实现 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.goldCup.sys.dao"/>
+<!-- 		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/> -->
+	</bean>
+	
+	<!-- 事务管理 -->
+<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 		<property name="dataSource" ref="dataSource"/> -->
+<!-- 	</bean> -->
+<!-- 	<tx:annotation-driven	transaction-manager="transactionManager" /> -->
+<!-- 	<bean name="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close" scope="prototype"> -->
+<!--         <constructor-arg index="0" ref="sqlSessionFactory" /> -->
+<!--     </bean> -->
+<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager"> -->
+<!-- 	<tx:attributes> -->
+<!-- 	<tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/> -->
+<!-- 	<tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/> -->
+<!-- 	<tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/> -->
+<!-- 	<tx:method name="select*" propagation="SUPPORTS" read-only="true"/> -->
+<!-- 	<tx:method name="get*" propagation="SUPPORTS" read-only="true"/> -->
+<!-- 	</tx:attributes> -->
+<!-- 	</tx:advice> -->
+	<!-- AOP切面 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+<!-- 	<aop:config> -->
+	
+<!-- 	</aop:config> -->
+<!-- 	<aop:config> -->
+<!-- 	<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.goldCup.*.service.*.*(..))"/> -->
+<!-- 	</aop:config> -->
+
+</beans>

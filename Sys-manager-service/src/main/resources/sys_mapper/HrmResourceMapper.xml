@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goldCup.sys.dao.HrmResourceMapper">
+	<resultMap type="hrmResource" id="hrmResourceMap">
+		<id column="id" property="id" />
+		<result column="loginid" property="loginid" />
+		<result column="password" property="password" />
+		<result column="lastname" property="lastname" />
+		<result column="sex" property="sex" />
+		<result column="telephone" property="telephone" />
+		<result column="mobile" property="mobile" />
+		<result column="issrm" property="issrm" />
+		<association property="hrmSubCompany"
+			javaType="hrmSubCompany">
+			<id column="sid" property="id" />
+			<result column="subcompanyname" property="subcompanyname" />
+		</association>
+		<association property="hrmDepartment"
+			javaType="hrmDepartment">
+			<id column="did" property="id" />
+			<result column="departmentname" property="departmentmark" />
+		</association>
+		<association property="hrmJobTitles"
+			javaType="hrmJobTitles">
+			<id column="jid" property="id" />
+			<result column="jobtitlename" property="jobtitlemark" />
+		</association>
+		<association property="roleManager" javaType="roleManager">
+			<result column="roleCode" property="roleCode" />
+			<result column="roleName" property="roleName" />
+		</association>
+	</resultMap>
+	<sql id="resourceColumns">
+	top 1 id,loginid,password,lastname,sex,telephone,mobile,subcompanyid1,sid,subcompanyname,
+		departmentid,did,departmentname,jobtitle,jid,jobtitlename,issrm
+	</sql>
+	<sql id="resourceSelector">
+		select
+		<choose>
+			<when test="columns != null and columns !=''">
+				${columns}
+			</when>
+			<otherwise>
+				<include refid="resourceColumns"></include>
+			</otherwise>
+		</choose>
+		from Cust_view_UserInfo
+	</sql>
+	<sql id="resourceWhere">
+		<where>
+			<if test="loginid != null and loginid != ''">
+			and	loginid=#{loginid}
+			</if>
+			<if test="hrmSubCompany != null">
+			and	subcompanyid1=#{hrmSubCompany.id}
+			</if>
+			<if test="hrmDepartment != null">
+			and	departmentid=#{hrmDepartment.id}
+			</if>
+			<if test="lastname != null and lastname !=''">
+			and loginid like '%'+#{lastname}+'%' or lastname like '%'+#{lastname}+'%'
+			</if>
+
+		</where>
+		<!-- <where> -->
+		<!-- len(loginid)>0 -->
+		<!-- <choose> -->
+		<!-- <when test="loginid != null and loginid != '' "> -->
+		<!-- and loginid=#{loginid} -->
+		<!-- </when> -->
+		<!-- <otherwise> -->
+		<!-- <choose> -->
+		<!-- <when test="hrmSubCompany != null"> -->
+		<!-- and subcompanyid1 = #{hrmSubCompany.id} -->
+		<!-- </when> -->
+		<!-- <when test="hrmDepartment != null"> -->
+		<!-- and departmentid=#{hrmDepartment.id} -->
+		<!-- </when> -->
+		<!-- <when test="lastname != null and lastname !=''"> -->
+		<!-- and loginid like '%'+#{lastname}+'%' or lastname like -->
+		<!-- '%'+#{lastname}+'%' -->
+		<!-- </when> -->
+		<!-- <otherwise> -->
+		<!-- 1=1 -->
+		<!-- </otherwise> -->
+		<!-- </choose> -->
+		<!-- </otherwise> -->
+		<!-- </choose> -->
+		<!-- </where> -->
+	</sql>
+	<select id="getInfo" resultMap="hrmResourceMap">
+		<include refid="resourceSelector"></include>
+		<include refid="resourceWhere"></include>
+	</select>
+	<select id="getListInfo" resultMap="hrmResourceMap">
+<include refid="resourceSelector"></include>
+<include refid="resourceWhere"></include>
+ order by loginid
+</select>
+<update id="updateInfo" parameterType="hrmResource" flushCache="true" statementType="PREPARED">
+ <selectKey keyProperty='id' resultType='int' order='AFTER'>
+select id FROM hrmresource WHERE  loginid = #{loginid};
+  </selectKey>
+ update hrmresource set issrm=#{issrm} where loginid = #{loginid};
+
+</update>
+</mapper>

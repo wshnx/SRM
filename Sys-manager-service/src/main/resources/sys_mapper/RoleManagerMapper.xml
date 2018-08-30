@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goldCup.sys.dao.RoleManagerMapper">
+<resultMap type="roleManager" id="roleMap">
+<id column="id" property="id"/>
+<result column="roleCode" property="roleCode"/>
+<result column="roleName" property="roleName"/>
+<result column="createUser" property="createUser"/>
+<result column="roleremark" property="roleRemark"/>
+<result column="isDel" property="isDel"/>
+<result column="count" property="count"/>
+
+<association property="hrmResource" javaType="hrmResource">
+<result column="loginid" property="loginid"/>
+<result column="lastname" property="lastname"/>
+</association>
+</resultMap>
+<sql id="columns">
+<choose>
+<when test="id == 6">
+count(*) as count
+</when>
+<otherwise>
+id,roleCode,roleName,dDate,createUser,roleRemark,isDel
+</otherwise>
+</choose>
+</sql>
+<sql id="roleSelector">
+select  
+<include refid="columns"></include>
+from sys_Role
+</sql>
+<sql id="roleWhere">
+<where>
+<choose>
+<when test="id == 6 or id == 8">
+<if test="roleCode != null and roleCode != ''">
+roleCode = #{roleCode}
+</if>
+<if test="roleName != null and roleName != ''">
+and roleName = #{roleName}
+</if>
+<if test="roleRemark != null and roleRemark != ''">
+and roleRemark = #{roleRemark}
+</if>
+</when>
+<otherwise>
+<if test="roleName != null and roleName != ''">
+roleCode like '%'+ #{roleName}+'%' or roleName like '%'+#{roleName}+'%'
+</if>
+</otherwise>
+</choose>
+</where>
+</sql>
+<select id="getInfo" resultMap="roleMap">
+<include refid="roleSelector"></include>
+<include refid="roleWhere"></include>
+</select>
+<insert id="insertInfo">
+insert into sys_Role(roleCode,roleName,roleRemark,createUser) values(#{roleCode},#{roleName},#{roleRemark},#{createUser});
+</insert>
+<select id="getListInfo" resultMap="roleMap">
+<include refid="roleSelector"></include>
+<include refid="roleWhere"></include>
+ order by id desc
+</select>
+<update id="updateInfo">
+update sys_Role
+<set>
+<choose>
+<when test="id == 6">
+isDel = #{isDel}
+</when>
+<otherwise>
+<if test="roleName != null and roleName != ''">
+roleName = #{roleName},
+</if>
+<if test="roleRemark != null and roleRemark != ''">
+roleRemark = #{roleRemark}
+</if>
+</otherwise>
+</choose>
+</set>
+ where roleCode = #{roleCode}
+</update>
+</mapper>

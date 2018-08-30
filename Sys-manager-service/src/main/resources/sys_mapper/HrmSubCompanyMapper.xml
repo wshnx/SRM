@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goldCup.sys.dao.HrmSubCompanyMapper">
+<resultMap type="hrmSubCompany" id="companyMap">
+<id column="id" property="id"/>
+<result column="subcompanyname" property="subcompanyname"/>
+<result column="pid" property="pid"/>
+<result column="tlevel" property="tlevel"/>
+</resultMap>
+<sql id="companySelector">
+select id,subcompanyname,pid,tlevel from 
+ (select id,subcompanyname,0 as pid,tlevel from HrmSubCompany  where id in (1,13,6,7) union all
+   select 1000+id as 'id',departmentname, case when supdepid=0  then subcompanyid1  else  supdepid+1000 end pid,tlevel from HrmDepartment where canceled is null and subcompanyid1 in (1,13,6,7)) as t
+</sql>
+<select id="getListInfo" resultMap="companyMap">
+<include refid="companySelector"></include>
+</select>
+</mapper>
