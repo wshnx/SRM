@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goldCup.sys.dao.RolePermissionMapper">
+<sql id="permissionSelector">
+select id,roleCode,permission,menuType from sys_Permission
+</sql>
+<sql id="permissionWhere">
+<where>
+roleCode = #{roleCode}
+</where>
+</sql>
+<select id="getInfo" resultType="rolePermission">
+<include refid="permissionSelector"></include>
+<include refid="permissionWhere"></include>
+</select>
+<!-- <insert id="insertInfo"> -->
+<!-- delete from sys_Permission where roleCode=#{roleCode}; -->
+<!-- insert into sys_Permission(roleCode,permission)  values(#{roleCode},#{permission}); -->
+<!-- </insert> -->
+</mapper>

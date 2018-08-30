@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goldCup.sys.dao.UserRoleMapper">
+<sql id="userRoleSelector">
+select id,uid,rid from sys_UserRole
+</sql>
+<sql id="userRoleWhere">
+<where>
+isdel = 0
+<if test="rid != null and rid !=''">
+and rid = #{rid}
+</if>
+</where>
+</sql>
+<select id="getListInfo" resultType="userRole">
+<include refid="userRoleSelector"></include>
+<include refid="userRoleWhere"></include>
+</select>
+</mapper>

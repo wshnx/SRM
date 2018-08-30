@@ -11,7 +11,10 @@ import com.goldCup.common.utils.JsonData;
 import com.goldCup.sys.api.RoleManagerAPI;
 import com.goldCup.sys.dao.RoleManagerMapper;
 import com.goldCup.sys.pojo.RoleManager;
+
+import lombok.extern.slf4j.Slf4j;
 @Service
+@Slf4j
 public class RoleManagerService implements RoleManagerAPI {
 
 	@Autowired

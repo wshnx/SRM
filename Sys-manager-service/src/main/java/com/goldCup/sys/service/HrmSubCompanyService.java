@@ -10,7 +10,10 @@ import com.goldCup.sys.api.HrmSubCompanyAPI;
 import com.goldCup.sys.dao.HrmSubCompanyMapper;
 import com.goldCup.sys.pojo.HrmSubCompany;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class HrmSubCompanyService implements HrmSubCompanyAPI {
 	@Autowired
 	private HrmSubCompanyMapper hrmCompMapper;
