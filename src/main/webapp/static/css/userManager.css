@@ -1,0 +1,23 @@
+@charset "UTF-8";
+.left-tree{
+	width:250px;
+	height:92%;
+	overflow-y: scroll;
+    border: 1px solid #85b5de;
+}
+.rightContent{
+	margin-left:251px;
+	height:92%;
+	border: 1px solid #85b5de;
+    margin-right: 220px;
+}
+.userMangerInfo>div:nth-child(3){
+	height:420px;
+}
+
+#userManagerTb tr td:first-child,#userManagerTb tr th:first-child{
+	width:60px;
+}
+#userManagerTb tr td:last-child,#userManagerTb tr th:last-child,#userManagerTb tr td:nth-child(2),#userManagerTb tr th:nth-child(2){
+	width:100px;
+}

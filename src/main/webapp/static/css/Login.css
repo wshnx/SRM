@@ -1,0 +1,57 @@
+.login_main {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-image: url(../img/bk_01.jpg);	
+	-moz-background-size: 100% 80%; 
+	-webkit-background-size : 100% 80%;
+	-o-background-size : 100% 80%;
+	background-size: 100% 80%;
+	margin-bottom: 110px;
+}
+
+body {
+	top: 0;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	width: 100%;
+}
+
+.login {
+	margin-top: 12%;
+	float: right;
+	width: 400px;
+	background: #fff;
+	border: 1px solid #d8d8d8;
+}
+
+@media screen and (max-width: 1366px) {
+	.login {
+		margin-top: 6%;
+	}
+}
+
+.loginH2 {
+	color: #333;
+	font-size: 20px;
+	font-weight: normal;
+	padding: 28px 0 20px 40px;
+	border-bottom: 1px solid #d1d7e2;
+}
+
+.boxH2 {
+	padding-bottom: 8px;
+}
+
+.regH2a {
+	padding-bottom: 21px;
+	border-bottom: 2px solid #2562b4;
+}
+
+.login_container {
+	width: 80%;
+	margin: 20px auto;
+}
